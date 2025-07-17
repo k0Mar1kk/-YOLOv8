@@ -1,0 +1,19 @@
+[
+    {
+        "filename": "muzDOG1.jpg",
+        "objects_detected": 1,
+        "processing_time": 5.45,
+        "timestamp": "2025-07-17 19:20:45",
+        "result_file": "muzDOG1.jpg"
+    }
+]
+
+[
+    {
+        "filename": "dog_video.mp4",
+        "objects_detected": 1,
+        "processing_time": 65.45,
+        "timestamp": "2025-07-17 19:28:04",
+        "result_file": "dog_video.mp4"
+    }
+]
