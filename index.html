@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Детекция собак без намордников YOLOv8</title>
+  <style>
+    :root {
+      --primary-color: hsl(212, 100%, 50%);
+      --secondary-color: #00ff6a;
+      --white: #ffffff;
+      --light-gray: #f5f5f5;
+    }
+    
+    body {
+      font-family: 'Times New Roman', Times, serif, sans-serif;
+      background-color: var(--light-gray);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      padding: 1rem 0;
+      color: var(--white);
+    }
+    
+    nav {
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav a {
+      margin: 0 1rem;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex: 1;
+    }
+    
+    .upload-section {
+      margin: 2rem 0;
+    }
+    
+    input[type="file"] {
+      display: none;
+    }
+    
+    .upload-label {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .submit-btn {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+    
+    .file-name {
+      margin-top: 1rem;
+      display: block;
+    }
+    
+    .result-container {
+      margin-top: 2rem;
+    }
+    
+    .media-container {
+      margin-top: 1rem;
+    }
+
+    .stats-container {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-top: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .stats-title {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .stat-value {
+      color: #333;
+    }
+
+    .history-link {
+      display: block;
+      margin-top: 1.5rem;
+      text-align: center;
+      color: var(--primary-color);
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Детекция собак без намордников YOLOv8</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="upload-section">
+      <form method="post" enctype="multipart/form-data" id="upload-form">
+        <input type="file" name="file" id="file-input" accept="image/*, video/*">
+        <label for="file-input" class="upload-label">Выберите файл</label>
+        <button type="submit" class="submit-btn">Анализировать</button>
+        <span id="file-name" class="file-name"></span>
+      </form>
+    </div>
+
+    {% if filename %}
+    <div class="result-container">
+      <h2>Результат анализа:</h2>
+      <div class="media-container">
+        {% if filename.endswith('.mp4') or filename.endswith('.webm') %}
+          <video width="640" controls>
+            <source src="{{ url_for('result_file', filename=filename) }}" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        {% else %}
+          <img src="{{ url_for('result_file', filename=filename) }}" width="640" alt="Результат детекции">
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if stats %}
+    <div class="stats-container">
+      <h3 class="stats-title">Статистика обработки</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Файл:</span>
+          <span class="stat-value">{{ stats.filename }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Дата и время:</span>
+          <span class="stat-value">{{ stats.timestamp }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Обнаружено объектов:</span>
+          <span class="stat-value">{{ stats.objects_detected }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Время обработки:</span>
+          <span class="stat-value">{{ stats.processing_time }} сек</span>
+        </div>
+      </div>
+      <a href="/history" class="history-link">Просмотреть историю запросов</a>
+    </div>
+    {% endif %}
+  </main>
+
+  <script>
+    document.getElementById('file-input').addEventListener('change', function(e) {
+      const fileName = e.target.files[0] ? e.target.files[0].name : 'Файл не выбран';
+      document.getElementById('file-name').textContent = `Выбран файл: ${fileName}`;
+    });
+  </script>
+</body>
+</html>
