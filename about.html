@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О проекте</title>
+  <style>
+    :root {
+      --primary-color: hsl(216, 100%, 50%);
+      --white: #ffffff;
+      --light-gray: #f5f5f5;
+    }
+    
+    body {
+      font-family: 'Times New Roman', Times, serif, sans-serif;
+      background-color: var(--light-gray);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      padding: 1rem 0;
+      color: var(--white);
+      text-align: center;
+    }
+    
+    nav {
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav a {
+      margin: 0 1rem;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      text-align: center;
+      flex: 1;
+    }
+    
+    footer {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 1rem 0;
+      text-align: center;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>YOLOv8</h1>
+  </header>
+
+  <main class="container">
+    <p>Детекция собак в намордникахи без с помощью дообученной модели YOLO v8.</p>
+  </main>
+
+  <footer>
+    <p>МОСКВА 2025</p>
+  </footer>
+</body>
+</html>

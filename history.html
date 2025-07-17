@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Запросы</title>
+  <style>
+    :root {
+      --primary-color: rgb(5, 134, 255);
+      --white: #ffffff;
+      --light-gray: #f5f5f5;
+      --table-header: #00a2ff;
+      --table-row: #e6e6fa;
+    }
+    
+    body {
+      font-family: 'Times New Roman', Times, serif, sans-serif;
+      background-color: var(--light-gray);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      padding: 1rem 0;
+      color: var(--white);
+      text-align: center;
+    }
+    
+    nav {
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav a {
+      margin: 0 1rem;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex: 1;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: var(--table-header);
+      color: white;
+    }
+    
+    tr:nth-child(even) {
+      background-color: var(--table-row);
+    }
+    
+    .report-btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+    
+    footer {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 1rem 0;
+      text-align: center;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>История запросов</h1>
+  </header>
+
+  <main class="container">
+    
+    {% if history %}
+    <table>
+      <thead>
+        <tr>
+          <th>Дата и время</th>
+          <th>Файл</th>
+          <th>Обнаружено объектов</th>
+          <th>Время обработки (сек)</th>
+          <th>Результат</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in history %}
+        <tr>
+          <td>{{ item.timestamp }}</td>
+          <td>{{ item.filename }}</td>
+          <td>{{ item.objects_detected }}</td>
+          <td>{{ item.processing_time }}</td>
+          <td>
+            {% if item.result_file %}
+              <a href="{{ url_for('result_file', filename=item.result_file) }}" target="_blank">Просмотреть</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>История запросов пуста.</p>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>МОСКВА 2025</p>
+  </footer>
+</body>
+</html>
